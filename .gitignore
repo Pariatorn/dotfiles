@@ -1,0 +1,95 @@
+# Neovim
+nvim/plugin/
+nvim/lazy-lock.json
+nvim/.netrwhist
+nvim/spell/
+nvim/undodir/
+nvim/sessions/
+nvim/node_modules/
+nvim/mason/
+
+# Fish
+fish/fish_variables
+fish/completions/
+fish/conf.d/
+fish/functions/
+fish/generated_completions/
+fish/fish_history
+
+# Kitty
+kitty/kitty.conf.bak
+kitty/*.old
+kitty/cached.json
+
+# Zathura
+zathura/bookmarks
+zathura/input-history
+zathura/history
+zathura/zathurarc.bak
+
+# General
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+*.bak
+*.tmp
+*.temp
+*.old
+.netrwhist
+
+# Local environment
+.env
+.envrc
+.direnv/
+
+# Package managers
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# LSP
+.luarc.json
+.null-ls*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.python-version
+*.so
+
+# Editor/IDE specific
+.vscode/
+.idea/
+*.sublime-*
+.project
+.settings/
+*.code-workspace
+
+# OS specific
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+## Linux
+.directory
+.Trash-*
+.nfs*
+
+## Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
