@@ -111,7 +111,3 @@ Thanks a lot to the other contributors of the different projects that I used in 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-To delete the welcome message, run:
-
-    set -U fish_greeting ""
