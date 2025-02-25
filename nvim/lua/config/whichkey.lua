@@ -80,6 +80,7 @@ wk.add({
     { "<leader>cr", function() vim.lsp.buf.rename() end, desc = "Rename Symbol" },
     { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code Actions" },
     { "<leader>cf", function() vim.lsp.buf.format() end, desc = "Format Document" },
+    { "<leader>cl", "<cmd>Lint<CR>", desc = "Lint Current File" },
 })
 
 -- Visual mode mappings

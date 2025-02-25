@@ -12,6 +12,61 @@ return {
         end,
     },
 
+    -- Dashboard
+    {
+        'goolord/alpha-nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            local alpha = require('alpha')
+            local dashboard = require('alpha.themes.dashboard')
+            
+            -- Set header
+            dashboard.section.header.val = {
+                [[                                                                              ]],
+                [[███    ███  █████  ███    ██ ██    ██ ███████  ██████ ██████  ██ ██████     ]],
+                [[████  ████ ██   ██ ████   ██ ██    ██ ██      ██      ██   ██ ██ ██   ██    ]],
+                [[██ ████ ██ ███████ ██ ██  ██ ██    ██ ███████ ██      ██████  ██ ██████     ]],
+                [[██  ██  ██ ██   ██ ██  ██ ██ ██    ██      ██ ██      ██   ██ ██ ██         ]],
+                [[██      ██ ██   ██ ██   ████  ██████  ███████  ██████ ██   ██ ██ ██         ]],
+                [[                                                                              ]],
+                [[     λ Write with Vim's Power • Compile with TeX's Grace • \begin{art}       ]],
+                [[                                                                              ]],
+            }
+            
+            -- Set menu
+            dashboard.section.buttons.val = {
+                dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+                dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+                dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+                dashboard.button("t", "  Find text", ":Telescope live_grep<CR>"),
+                dashboard.button("l", "  LaTeX files", ":cd ~/Documents/latex<CR>:Telescope find_files<CR>"),
+                dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua<CR>"),
+                dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
+            }
+
+            -- Footer
+            local function footer()
+                local plugins = #vim.tbl_keys(require('lazy').plugins())
+                local v = vim.version()
+                return string.format(" Neovim %d.%d.%d   %d plugins loaded", v.major, v.minor, v.patch, plugins)
+            end
+            dashboard.section.footer.val = footer()
+
+            -- Send config to alpha
+            alpha.setup(dashboard.opts)
+            
+            -- Auto start alpha when no arguments
+            vim.api.nvim_create_autocmd("VimEnter", {
+                pattern = "*",
+                callback = function()
+                    if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
+                        require('alpha').start()
+                    end
+                end,
+            })
+        end,
+    },
+
     -- Which-key for key bindings
     {
         "folke/which-key.nvim",
@@ -264,5 +319,81 @@ return {
             })
             vim.cmd([[colorscheme tokyonight]])
         end,
+    },
+
+    -- Linting
+    {
+        "mfussenegger/nvim-lint",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local lint = require("lint")
+            
+            lint.linters_by_ft = {
+                tex = { "chktex" },
+                bib = { "bibclean" },
+            }
+            
+            -- Set up autocommands for linting
+            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+                callback = function()
+                    require("lint").try_lint()
+                end,
+            })
+            
+            -- Commands for manual linting
+            vim.api.nvim_create_user_command("Lint", function()
+                require("lint").try_lint()
+            end, { desc = "Trigger linting for current file" })
+        end,
+    },
+
+    -- Status Line
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            require('lualine').setup {
+                options = {
+                    icons_enabled = true,
+                    theme = 'tokyonight',
+                    component_separators = { left = '', right = ''},
+                    section_separators = { left = '', right = ''},
+                    disabled_filetypes = {},
+                    always_divide_middle = true,
+                    globalstatus = true,
+                },
+                sections = {
+                    lualine_a = {'mode'},
+                    lualine_b = {'branch', 'diff', 'diagnostics'},
+                    lualine_c = {'filename'},
+                    lualine_x = {
+                        {
+                            function()
+                                if vim.bo.filetype == 'tex' then
+                                    local status = vim.g.vimtex_compiler_latexmk_engines['_'] or ''
+                                    return '󱕪 ' .. status
+                                else
+                                    return ''
+                                end
+                            end,
+                            color = { fg = '#7aa2f7' }
+                        },
+                        'encoding', 'fileformat', 'filetype'
+                    },
+                    lualine_y = {'progress'},
+                    lualine_z = {'location'}
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {'filename'},
+                    lualine_x = {'location'},
+                    lualine_y = {},
+                    lualine_z = {}
+                },
+                tabline = {},
+                extensions = {'nvim-tree', 'fugitive'}
+            }
+        end
     },
 } 
