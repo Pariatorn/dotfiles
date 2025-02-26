@@ -46,7 +46,7 @@ A streamlined configuration for Neovim, Kitty, Zathura, and Fish shell, forked a
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/Pariatorn/config-files.git ~/.config
+git clone https://github.com/Pariatorn/dotfiles.git ~/.config
 ```
 
 2. Install required dependencies (example using apt-based systems):
@@ -104,7 +104,7 @@ See [CheatSheet.md](CheatSheet.md) for detailed keybindings and features.
 
 ## Credits
 
-This configuration was originally forked from [benbrastmckie's config](https://github.com/benbrastmckie/.config). Later, I diverged more and more from the original config and added my own features tailored to my needs. Please see his original repository for the comprehensive version and additional features.
+This configuration was originally forked from [benbrastmckie's config](https://github.com/benbrastmckie/.config). Later, I diverged more and more from the original config and added my own features tailored to my needs. Please see his original repository for the comprehensive version and different features.
 
 Thanks a lot to the other contributors of the different projects that I used in this configuration. I know, there is a lot of work put into them.
 
