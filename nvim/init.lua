@@ -40,6 +40,28 @@ vim.g.tex_flavor = "latex"
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
+-- Enhanced spell checking for LaTeX files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {"tex", "latex", "markdown"},
+    callback = function()
+        vim.opt_local.spell = true
+        -- Set spell suggestions popup options
+        vim.opt_local.spelloptions = "camel"
+        vim.opt_local.spellsuggest = "best,10"
+    end
+})
+
+-- Custom spell checking commands
+vim.api.nvim_create_user_command("SpellAdd", function(opts)
+    local word = opts.args
+    if word == "" then
+        -- If no argument provided, use word under cursor
+        word = vim.fn.expand("<cword>")
+    end
+    vim.cmd("spellgood " .. word)
+    print("Added '" .. word .. "' to spell file")
+end, { nargs = "?" })
+
 -- Better navigation for wrapped lines
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })

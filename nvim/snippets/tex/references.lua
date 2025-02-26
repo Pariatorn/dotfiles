@@ -4,6 +4,7 @@ local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
 local tex = require("snippets.tex.conditions")
 
+-- Reference, Citation, and Document Structure Snippets
 return {
     -- preamble
     s({trig= "up", dscr = "usepackage"}, 

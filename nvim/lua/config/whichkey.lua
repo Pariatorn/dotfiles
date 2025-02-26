@@ -81,6 +81,16 @@ wk.add({
     { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code Actions" },
     { "<leader>cf", function() vim.lsp.buf.format() end, desc = "Format Document" },
     { "<leader>cl", "<cmd>Lint<CR>", desc = "Lint Current File" },
+
+    -- Spell checking
+    { "<leader>s", group = "Spell Checking" },
+    { "<leader>st", "<cmd>setlocal spell!<CR>", desc = "Toggle Spell Check" },
+    { "<leader>se", "<cmd>setlocal spelllang=en_us<CR>", desc = "English (US)" },
+    { "<leader>sb", "<cmd>setlocal spelllang=en_gb<CR>", desc = "English (GB)" },
+    { "<leader>sd", "<cmd>setlocal spelllang=de_de<CR>", desc = "German" },
+    { "<leader>sf", "<cmd>setlocal spelllang=fr<CR>", desc = "French" },
+    { "<leader>sm", "<cmd>setlocal spelllang=en_us,de_de<CR>", desc = "Multi (EN+DE)" },
+    { "<leader>sn", "<cmd>normal! 1z=<CR>", desc = "Choose First Suggestion" },
 })
 
 -- Visual mode mappings

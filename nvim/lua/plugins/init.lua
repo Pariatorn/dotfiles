@@ -9,6 +9,8 @@ return {
             vim.g.vimtex_quickfix_mode = 0
             vim.g.vimtex_syntax_enabled = 1
             vim.g.vimtex_format_enabled = 1
+            vim.g.vimtex_mappings_enabled = 0  -- Disable default mappings
+            vim.g.vimtex_imaps_enabled = 0     -- Disable insert mode mappings
         end,
     },
 
@@ -352,6 +354,65 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function()
+            -- VimTeX status component
+            local vimtex_status = {
+                function()
+                    if vim.bo.filetype ~= 'tex' then return '' end
+                    local status = ''
+                    
+                    -- Check if VimTeX is loaded
+                    if vim.fn.exists('*vimtex#state#get_id') == 0 then
+                        return 'VimTeX not loaded'
+                    end
+                    
+                    -- Get the VimTeX compiler state
+                    local compiler_status = ''
+                    if vim.g.vimtex_compiler_enabled and vim.b.vimtex and vim.b.vimtex.compiler then
+                        local compiler = vim.b.vimtex.compiler
+                        if compiler.is_running() then
+                            compiler_status = " 󰄭 Running"
+                        else
+                            if vim.fn.jobid(0) then
+                                compiler_status = " 󰄭 Idle"
+                            end
+                        end
+                    end
+                    
+                    -- Get errors count from QuickFix
+                    local errors_count = 0
+                    if vim.fn.exists('*getqflist') == 1 then
+                        for _, item in ipairs(vim.fn.getqflist()) do
+                            if item.type == 'E' then
+                                errors_count = errors_count + 1
+                            end
+                        end
+                    end
+                    
+                    local errors_info = ''
+                    if errors_count > 0 then
+                        errors_info = " 󰅚 " .. errors_count .. " errors"
+                    end
+                    
+                    -- Combine the status components
+                    status = "LaTeX" .. compiler_status .. errors_info
+                    return status
+                end,
+                icon = '󱕪',
+                color = { fg = '#7aa2f7', gui = 'bold' }
+            }
+            
+            -- Spell checker component
+            local spell_status = {
+                function()
+                    if vim.wo.spell then
+                        return '󰓆 ' .. vim.bo.spelllang
+                    else
+                        return ''
+                    end
+                end,
+                color = { fg = '#a3be8c', gui = 'bold' }
+            }
+            
             require('lualine').setup {
                 options = {
                     icons_enabled = true,
@@ -367,18 +428,11 @@ return {
                     lualine_b = {'branch', 'diff', 'diagnostics'},
                     lualine_c = {'filename'},
                     lualine_x = {
-                        {
-                            function()
-                                if vim.bo.filetype == 'tex' then
-                                    local status = vim.g.vimtex_compiler_latexmk_engines['_'] or ''
-                                    return '󱕪 ' .. status
-                                else
-                                    return ''
-                                end
-                            end,
-                            color = { fg = '#7aa2f7' }
-                        },
-                        'encoding', 'fileformat', 'filetype'
+                        vimtex_status,
+                        spell_status,
+                        'encoding', 
+                        'fileformat', 
+                        'filetype'
                     },
                     lualine_y = {'progress'},
                     lualine_z = {'location'}
