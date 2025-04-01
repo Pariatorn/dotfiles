@@ -235,7 +235,7 @@ return {
                         luasnip.lsp_expand(args.body)
                     end,
                 },
-                mapping = cmp.mapping.preset.insert({
+                mapping = {
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
                     ["<C-Space>"] = cmp.mapping.complete(),
@@ -259,12 +259,21 @@ return {
                             fallback()
                         end
                     end, { "i", "s" }),
-                }),
-                sources = cmp.config.sources({
+                },
+                sources = {
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
                     { name = "buffer" },
                     { name = "path" },
+                },
+            })
+
+            -- Set up cmdline completion
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = "path" },
+                    { name = "cmdline" },
                 }),
             })
         end,
