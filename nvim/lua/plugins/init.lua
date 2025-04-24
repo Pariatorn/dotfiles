@@ -163,6 +163,21 @@ return {
                 ensure_installed = { "texlab" },
             })
             
+            -- Configure diagnostic display
+            vim.diagnostic.config({
+                virtual_text = true,
+                signs = true,
+                underline = true,
+                update_in_insert = false,
+                severity_sort = true,
+                float = {
+                    border = "rounded",
+                    source = "always",
+                    header = "",
+                    prefix = "",
+                },
+            })
+            
             -- Configure texlab
             require("lspconfig").texlab.setup({
                 capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -313,7 +328,20 @@ return {
                         "%.synctex.gz",
                     },
                 },
+                pickers = {
+                    spell_suggest = {
+                        theme = "dropdown",
+                        initial_mode = "normal",
+                    },
+                    diagnostics = {
+                        theme = "dropdown",
+                        initial_mode = "normal",
+                    }
+                },
             })
+            
+            -- Load extensions
+            pcall(require('telescope').load_extension, 'fzf')
         end,
     },
 
@@ -354,6 +382,33 @@ return {
             -- Commands for manual linting
             vim.api.nvim_create_user_command("Lint", function()
                 require("lint").try_lint()
+                -- Show diagnostic count after linting
+                local diagnostics = vim.diagnostic.get(0)
+                local error_count = 0
+                local warning_count = 0
+                local info_count = 0
+                local hint_count = 0
+                
+                for _, d in ipairs(diagnostics) do
+                    if d.severity == vim.diagnostic.severity.ERROR then
+                        error_count = error_count + 1
+                    elseif d.severity == vim.diagnostic.severity.WARN then
+                        warning_count = warning_count + 1
+                    elseif d.severity == vim.diagnostic.severity.INFO then
+                        info_count = info_count + 1
+                    elseif d.severity == vim.diagnostic.severity.HINT then
+                        hint_count = hint_count + 1
+                    end
+                end
+                
+                local msg = string.format("Lint complete: %d errors, %d warnings, %d info, %d hints", 
+                    error_count, warning_count, info_count, hint_count)
+                vim.notify(msg, vim.log.levels.INFO)
+                
+                -- If there are errors or warnings, prompt to open diagnostics
+                if error_count > 0 or warning_count > 0 then
+                    vim.notify("Use <leader>cd to see all diagnostics", vim.log.levels.INFO)
+                end
             end, { desc = "Trigger linting for current file" })
         end,
     },
@@ -422,6 +477,17 @@ return {
                 color = { fg = '#a3be8c', gui = 'bold' }
             }
             
+            -- Diagnostics component with counts
+            local diagnostics_component = {
+                'diagnostics',
+                sources = {'nvim_diagnostic', 'nvim_lsp'},
+                sections = {'error', 'warn', 'info', 'hint'},
+                symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
+                colored = true,
+                update_in_insert = false,
+                always_visible = false,
+            }
+            
             require('lualine').setup {
                 options = {
                     icons_enabled = true,
@@ -434,7 +500,7 @@ return {
                 },
                 sections = {
                     lualine_a = {'mode'},
-                    lualine_b = {'branch', 'diff', 'diagnostics'},
+                    lualine_b = {'branch', 'diff', diagnostics_component},
                     lualine_c = {'filename'},
                     lualine_x = {
                         vimtex_status,

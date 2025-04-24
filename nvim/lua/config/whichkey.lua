@@ -76,12 +76,6 @@ wk.add({
     { "gr", function() vim.lsp.buf.references() end, desc = "Find References" },
     { "K", function() vim.lsp.buf.hover() end, desc = "Show Documentation" },
 
-    -- Code actions and refactoring
-    { "<leader>cr", function() vim.lsp.buf.rename() end, desc = "Rename Symbol" },
-    { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code Actions" },
-    { "<leader>cf", function() vim.lsp.buf.format() end, desc = "Format Document" },
-    { "<leader>cl", "<cmd>Lint<CR>", desc = "Lint Current File" },
-
     -- Spell checking
     { "<leader>s", group = "Spell Checking" },
     { "<leader>st", "<cmd>setlocal spell!<CR>", desc = "Toggle Spell Check" },
@@ -91,6 +85,20 @@ wk.add({
     { "<leader>sf", "<cmd>setlocal spelllang=fr<CR>", desc = "French" },
     { "<leader>sm", "<cmd>setlocal spelllang=en_us,de_de<CR>", desc = "Multi (EN+DE)" },
     { "<leader>sn", "<cmd>normal! 1z=<CR>", desc = "Choose First Suggestion" },
+    { "<leader>ss", "<cmd>Telescope spell_suggest<CR>", desc = "Show Suggestions" },
+    { "<leader>sp", "<cmd>normal! ]s<CR>", desc = "Next Misspelled Word" },
+    { "<leader>sP", "<cmd>normal! [s<CR>", desc = "Previous Misspelled Word" },
+    { "<leader>sa", "<cmd>SpellAdd<CR>", desc = "Add Word to Dictionary" },
+
+    -- Code actions and refactoring
+    { "<leader>cr", function() vim.lsp.buf.rename() end, desc = "Rename Symbol" },
+    { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code Actions" },
+    { "<leader>cf", function() vim.lsp.buf.format() end, desc = "Format Document" },
+    { "<leader>cl", "<cmd>Lint<CR>", desc = "Lint Current File" },
+    { "<leader>cd", "<cmd>Telescope diagnostics<CR>", desc = "Show Diagnostics" },
+    { "<leader>cj", function() vim.diagnostic.goto_next() end, desc = "Next Diagnostic" },
+    { "<leader>ck", function() vim.diagnostic.goto_prev() end, desc = "Previous Diagnostic" },
+    { "<leader>cq", function() vim.diagnostic.setloclist() end, desc = "Diagnostics in Quickfix" },
 })
 
 -- Visual mode mappings
