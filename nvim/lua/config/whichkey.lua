@@ -19,8 +19,7 @@ wk.setup({
             g = true,
         },
     },
-    -- Use win instead of window (deprecated)
-    win = {
+    window = {
         border = "single",
         position = "bottom",
         margin = { 1, 0, 1, 0 },
