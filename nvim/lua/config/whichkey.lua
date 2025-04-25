@@ -64,7 +64,7 @@ wk.add({
     { "<leader>lv", "<cmd>VimtexView<CR>", desc = "View PDF" },
     { "<leader>lt", "<cmd>VimtexTocToggle<CR>", desc = "Toggle TOC" },
     { "<leader>le", "<cmd>VimtexErrors<CR>", desc = "Show Errors" },
-    { "<leader>ls", "<cmd>VimtexStop<CR>", desc = "Stop Compilation" },
+    { "<leader>lo", "<cmd>VimtexCompileOutput<CR>", desc = "Show Compile Output" },
     { "<leader>li", "<cmd>VimtexInfo<CR>", desc = "Show Info" },
     { "<leader>lk", "<cmd>VimtexClean<CR>", desc = "Clean Files" },
 
