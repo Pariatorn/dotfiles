@@ -3,7 +3,7 @@ local s = ls.snippet
 local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
-local tex = require("snippets.tex.conditions")
+local tex = require("tex.conditions")
 
 return {
     -- operators

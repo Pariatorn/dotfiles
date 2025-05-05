@@ -22,8 +22,12 @@ return {
         config = function()
             local ls = require("luasnip")
             
+            -- Add snippets directory to package path
+            local snippets_path = vim.fn.stdpath("config") .. "/snippets"
+            package.path = package.path .. ";" .. snippets_path .. "/?.lua"
+            
             -- Load snippets from the snippets directory
-            require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/snippets/"})
+            require("luasnip.loaders.from_lua").load({paths = snippets_path})
             require("luasnip").filetype_extend("latex", { "tex" })
 
             -- Snippet settings
