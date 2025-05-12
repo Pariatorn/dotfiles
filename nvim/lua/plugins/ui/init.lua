@@ -69,6 +69,36 @@ return {
         end,
     },
 
+    -- Buffer line (tabs)
+    {
+        'akinsho/bufferline.nvim',
+        version = "*",
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            require("bufferline").setup({
+                options = {
+                    mode = "buffers",
+                    separator_style = "slant",
+                    always_show_bufferline = true,
+                    show_buffer_close_icons = true,
+                    show_close_icon = true,
+                    color_icons = true,
+                    diagnostics = "nvim_lsp",
+                    diagnostics_indicator = function(_, _, diagnostics_dict)
+                        local s = " "
+                        if diagnostics_dict.error then
+                            s = s .. " " .. diagnostics_dict.error
+                        end
+                        if diagnostics_dict.warning then
+                            s = s .. " " .. diagnostics_dict.warning
+                        end
+                        return s
+                    end,
+                }
+            })
+        end,
+    },
+
     -- Status Line
     {
         'nvim-lualine/lualine.nvim',
