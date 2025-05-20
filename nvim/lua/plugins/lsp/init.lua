@@ -44,8 +44,27 @@ return {
                 },
             })
 
-            -- Load VSCode style snippets
-            require("luasnip.loaders.from_vscode").lazy_load()
+            -- Filter VSCode snippets - prevent single dot triggering dots snippet
+            require("luasnip").filetype_extend("tex", { "latex" })
+            
+            -- Block specific problematic snippets
+            local filter_ft_snippets = function(snippets, ft)
+                if ft == "latex" then
+                    -- Remove the dots snippet that triggers with a single dot
+                    if snippets.etc and snippets.etc.prefix == "..." then
+                        -- We'll use our custom snippet for this
+                        snippets.etc = nil
+                    end
+                end
+                return snippets
+            end
+
+            -- Load VSCode style snippets with our filter
+            require("luasnip.loaders.from_vscode").lazy_load({ 
+                paths = vim.fn.stdpath("data") .. "/lazy/friendly-snippets/snippets",
+                override_priority = true,
+                filter_snippets = filter_ft_snippets
+            })
         end,
     },
 

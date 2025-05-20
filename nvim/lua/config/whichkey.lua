@@ -69,7 +69,17 @@ wk.add({
     { "<leader>lk", "<cmd>VimtexClean<CR>", desc = "Clean Files" },
 
     -- LSP operations
-    { "gd", function() vim.lsp.buf.definition() end, desc = "Go to Definition" },
+    { "gd", function() 
+        -- Jump directly to definition if there's only one
+        local params = vim.lsp.util.make_position_params()
+        vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
+            if result and #result == 1 then
+                vim.lsp.util.jump_to_location(result[1], vim.lsp.get_client_by_id(ctx.client_id).offset_encoding)
+            else
+                vim.lsp.buf.definition()
+            end
+        end)
+    end, desc = "Go to Definition" },
     { "gD", function() vim.lsp.buf.declaration() end, desc = "Go to Declaration" },
     { "gi", function() vim.lsp.buf.implementation() end, desc = "Go to Implementation" },
     { "gr", function() vim.lsp.buf.references() end, desc = "Find References" },
