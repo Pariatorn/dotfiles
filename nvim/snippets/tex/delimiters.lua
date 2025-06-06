@@ -11,9 +11,7 @@ return {
         { trig = "lr", dscr = "Left Right Delimiters" },
         fmta(
             [[
-            \left(
-            <>
-            \right)
+            \left( <> \right)
             ]],
             { i(0) }
         ),
@@ -23,9 +21,7 @@ return {
         { trig = "lrc", dscr = "Left Right Delimiters with curly braces" },
         fmta(
             [[
-            \left\{
-            <>
-            \right\}
+            \left\{ <> \right\}
             ]],
             { i(0) }
         ),
@@ -35,9 +31,7 @@ return {
         { trig = "lrb", dscr = "Left Right Delimiters with brackets" },
         fmta(
             [[
-            \left[
-            <>
-            \right]
+            \left[ <> \right]
             ]],
             { i(0) }
         ),
