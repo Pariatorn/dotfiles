@@ -11,7 +11,7 @@ return {
         fmta(
             [[
             \begin{<>}
-            <>
+                <>
             \end{<>}
             ]],
             { i(1), i(0), rep(1) }
@@ -23,7 +23,7 @@ return {
         fmta(
             [[
             \begin{align}
-            <>
+                <>
             \end{align}
             ]],
             { i(0) }
@@ -35,7 +35,7 @@ return {
         fmta(
             [[
             \begin{align*}
-            <>
+                <>
             \end{align*}
             ]],
             { i(0) }
@@ -47,7 +47,7 @@ return {
         fmta(
             [[
             \begin{itemize}
-            <>
+                <>
             \end{itemize}
             ]],
             { i(0) }
@@ -59,7 +59,7 @@ return {
         fmta(
             [[
             \begin{enumerate}
-            <>
+                <>
             \end{enumerate}
             ]],
             { i(0) }
@@ -71,7 +71,7 @@ return {
         fmta(
             [[
             \begin{enumerate}[\label=<>]
-            <>
+                <>
             \end{enumerate}
             ]],
             { i(1, "alph*"), i(0) }
@@ -83,10 +83,10 @@ return {
         fmta(
             [[
             \begin{figure}[h]
-            \centering
-            \includegraphics[width=\textwidth]{<>}
-            \caption{<>}
-            \label{fig:<>}
+                \centering
+                \includegraphics[width=\textwidth]{<>}
+                \caption{<>}
+                \label{fig:<>}
             \end{figure}
             ]],
             { i(1, "path/to/image"), i(2), i(3) }
@@ -98,10 +98,10 @@ return {
         fmta(
             [[
             \begin{figure}[<>]
-            \centering
-            \includegraphics[width=\textwidth]{<>}
-            \caption{<>}
-            \label{fig:<>}
+                \centering
+                \includegraphics[width=\textwidth]{<>}
+                \caption{<>}
+                \label{fig:<>}
             \end{figure}
             ]],
             { i(1, "h"), i(2, "path/to/image"), i(3), i(4) }
@@ -113,16 +113,16 @@ return {
         fmta(
             [[
             \begin{table}[h]
-            \centering
-            \caption{<>}
-            \begin{tabular}{<>}
-            \toprule
-            <>
-            \midrule
-            <>
-            \bottomrule
-            \end{tabular}
-            \label{tab:<>}
+                \centering
+                \caption{<>}
+                \begin{tabular}{<>}
+                    \toprule
+                    <>
+                    \midrule
+                    <>
+                    \bottomrule
+                \end{tabular}
+                \label{tab:<>}
             \end{table}
             ]],
             { i(1), i(2, "positions"), i(4), i(0), i(3) }
@@ -134,16 +134,16 @@ return {
         fmta(
             [[
             \begin{table}[<>]
-            \centering
-            \caption{<>}
-            \begin{tabular}{<>}
-            \toprule
-            <>
-            \midrule
-            <>
-            \bottomrule
-            \end{tabular}
-            \label{tab:<>}
+                \centering
+                \caption{<>}
+                \begin{tabular}{<>}
+                    \toprule
+                    <>
+                    \midrule
+                    <>
+                    \bottomrule
+                \end{tabular}
+                \label{tab:<>}
             \end{table}
             ]],
             { i(1, "h"), i(2), i(3, "positions"), i(5), i(0), i(4) }
