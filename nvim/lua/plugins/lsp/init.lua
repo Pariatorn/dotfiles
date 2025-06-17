@@ -29,6 +29,7 @@ return {
             -- Load snippets from the snippets directory
             require("luasnip.loaders.from_lua").load({paths = snippets_path})
             require("luasnip").filetype_extend("latex", { "tex" })
+            require("luasnip").filetype_extend("typst", { "typst" })
 
             -- Snippet settings
             ls.config.set_config({
