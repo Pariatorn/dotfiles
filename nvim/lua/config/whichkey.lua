@@ -38,6 +38,7 @@ wk.add({
     -- Groups
     { "<leader>f", group = "Find" },
     { "<leader>l", group = "LaTeX" },
+    { "<leader>t", group = "Typst" },
     { "<leader>r", group = "Refactor" },
     { "<leader>b", group = "Buffer" },
     { "<leader>c", group = "Code" },
@@ -67,6 +68,51 @@ wk.add({
     { "<leader>lo", "<cmd>VimtexCompileOutput<CR>", desc = "Show Compile Output" },
     { "<leader>li", "<cmd>VimtexInfo<CR>", desc = "Show Info" },
     { "<leader>lk", "<cmd>VimtexClean<CR>", desc = "Clean Files" },
+
+    -- Typst operations
+    { "<leader>tw", "<cmd>TypstWatch<CR>", desc = "Watch & Compile" },
+    { "<leader>tc", function()
+        local filepath = vim.api.nvim_buf_get_name(0)
+        if filepath:match("%.typ$") then
+            vim.fn.system("typst compile " .. vim.fn.shellescape(filepath))
+            print("Typst compilation complete")
+        else
+            print("Not a Typst file")
+        end
+    end, desc = "Compile Once" },
+    { "<leader>tv", function()
+        local filepath = vim.api.nvim_buf_get_name(0)
+        if filepath:match("%.typ$") then
+            local pdf_path = filepath:gsub("%.typ$", ".pdf")
+            if vim.fn.executable("zathura") == 1 then
+                vim.fn.jobstart({"zathura", pdf_path}, {detach = true})
+                print("Opening PDF in Zathura")
+            elseif vim.fn.executable("open") == 1 then
+                vim.fn.jobstart({"open", pdf_path}, {detach = true})
+                print("Opening PDF with system viewer")
+            elseif vim.fn.executable("xdg-open") == 1 then
+                vim.fn.jobstart({"xdg-open", pdf_path}, {detach = true})
+                print("Opening PDF with default viewer")
+            else
+                print("No suitable PDF viewer found")
+            end
+        else
+            print("Not a Typst file")
+        end
+    end, desc = "View PDF" },
+    { "<leader>tp", desc = "Pin Main File" }, -- Configured in LSP on_attach
+    { "<leader>tu", desc = "Unpin Main File" }, -- Configured in LSP on_attach
+    { "<leader>tf", function() vim.lsp.buf.format() end, desc = "Format Document" },
+    { "<leader>tr", function()
+        require("typst-preview").toggle()
+    end, desc = "Toggle Preview", cond = function()
+        return pcall(require, "typst-preview")
+    end },
+    { "<leader>ts", function()
+        require("typst-preview").sync_with_cursor()
+    end, desc = "Sync Preview with Cursor", cond = function()
+        return pcall(require, "typst-preview")
+    end },
 
     -- LSP operations
     { "gd", function() 

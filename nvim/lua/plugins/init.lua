@@ -11,4 +11,7 @@ return {
     
     -- Include LaTeX plugins (vimtex)
     require("plugins.tex"),
+    
+    -- Include Typst plugins (typst.vim, tinymist, preview)
+    require("plugins.typst"),
 } 

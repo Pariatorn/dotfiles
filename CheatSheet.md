@@ -8,8 +8,9 @@ This document provides a comprehensive list of keybindings and features availabl
 2. [Window Management](#window-management)
 3. [File Operations](#file-operations)
 4. [LaTeX Features](#latex-features)
-5. [Code and LSP](#code-and-lsp)
-6. [Search and Find](#search-and-find)
+5. [Typst Features](#typst-features)
+6. [Code and LSP](#code-and-lsp)
+7. [Search and Find](#search-and-find)
 
 ## Core Navigation
 
@@ -53,6 +54,27 @@ This document provides a comprehensive list of keybindings and features availabl
 - `<leader>li` - Show info
 - `<leader>lk` - Clean auxiliary files
 
+## Typst Features
+
+### Document Compilation
+- `<leader>tw` - Watch & compile (automatically recompiles on changes)
+- `<leader>tc` - Compile once (single compilation)
+- `<leader>tv` - View PDF (opens compiled PDF)
+
+### Document Management
+- `<leader>tf` - Format document (using typstyle)
+- `<leader>tp` - Pin main file (for multi-file projects)
+- `<leader>tu` - Unpin main file
+- `<leader>tr` - Toggle web preview (live preview in browser)
+- `<leader>ts` - Sync preview with cursor position
+
+### Features
+- **Automatic compilation**: Fast incremental compilation on save
+- **Live preview**: Real-time web-based preview with cursor sync
+- **Multi-file support**: Pin main files for complex projects
+- **Smart PDF viewing**: Auto-detects available viewers (Zathura, system default)
+- **LSP integration**: Full language server support with tinymist
+
 ## Code and LSP
 
 ### Code Navigation
@@ -80,6 +102,7 @@ This document provides a comprehensive list of keybindings and features availabl
 The following key groups are available through Which-Key (`<leader>` key):
 - `<leader>f` - Find operations
 - `<leader>l` - LaTeX operations
+- `<leader>t` - Typst operations
 - `<leader>r` - Refactor operations
 - `<leader>b` - Buffer operations
 - `<leader>c` - Code operations

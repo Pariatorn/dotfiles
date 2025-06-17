@@ -3,7 +3,7 @@ local M = {}
 function M.setup()
     require("mason").setup()
     require("mason-lspconfig").setup({
-        ensure_installed = { "texlab" },
+        ensure_installed = { "texlab", "tinymist" },
     })
     
     -- Configure diagnostic display
@@ -42,6 +42,34 @@ function M.setup()
                 },
             },
         },
+    })
+    
+    -- Configure tinymist for Typst
+    require("lspconfig").tinymist.setup({
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        settings = {
+            formatterMode = "typstyle",
+            exportPdf = "onType",
+            semanticTokens = "disable",
+        },
+        on_attach = function(client, bufnr)
+            -- Typst-specific keymaps for pin/unpin main file functionality
+            vim.keymap.set("n", "<leader>tp", function()
+                client:exec_cmd({
+                    title = "pin",
+                    command = "tinymist.pinMain",
+                    arguments = { vim.api.nvim_buf_get_name(0) },
+                }, { bufnr = bufnr })
+            end, { desc = "[T]inymist [P]in Main File", noremap = true, buffer = bufnr })
+
+            vim.keymap.set("n", "<leader>tu", function()
+                client:exec_cmd({
+                    title = "unpin",
+                    command = "tinymist.pinMain",
+                    arguments = { vim.v.null },
+                }, { bufnr = bufnr })
+            end, { desc = "[T]inymist [U]npin Main File", noremap = true, buffer = bufnr })
+        end,
     })
 end
 

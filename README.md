@@ -10,12 +10,13 @@
      λ Write with Vim's Power • Compile with TeX's Grace • \begin{art}
 ```
 
-A streamlined configuration for Neovim, Kitty, Zathura, and Fish shell, forked and adapted from [benbrastmckie's config](https://github.com/benbrastmckie/.config). The main goal of this fork is to provide a minimal yet powerful setup for writing and development, with special focus on LaTeX integration.
+A streamlined configuration for Neovim, Kitty, Zathura, and Fish shell, forked and adapted from [benbrastmckie's config](https://github.com/benbrastmckie/.config). The main goal of this fork is to provide a minimal yet powerful setup for writing and development, with special focus on LaTeX and Typst integration.
 
 ## Features
 
 - **Neovim** (v0.9.5+) configuration with:
   - LaTeX integration via VimTeX
+  - Typst integration via typst.vim and tinymist LSP
   - Modern UI with Lazy package manager
   - Efficient code completion and LSP support
   - Custom keybindings for improved workflow
@@ -40,6 +41,7 @@ A streamlined configuration for Neovim, Kitty, Zathura, and Fish shell, forked a
 - Python 3 and pip
 - A Nerd Font (included in repo)
 - LaTeX distribution (for LaTeX support)
+- Typst (for Typst support)
 - ripgrep, fd-find (for telescope)
 
 ## Quick Installation
@@ -57,6 +59,18 @@ sudo apt install neovim python3-pip nodejs npm ripgrep fd-find
 # Optional but recommended
 sudo apt install kitty zathura fish
 ```
+
+   For Fedora users, install Typst:
+   ```bash
+   # Option 1: Using Snap (recommended)
+   sudo dnf install snapd
+   sudo systemctl enable --now snapd.socket
+   sudo ln -s /var/lib/snapd/snap /snap
+   sudo snap install typst
+   
+   # Option 2: Using Cargo
+   cargo install --locked typst-cli
+   ```
 
 3. Install Python provider for Neovim:
 ```bash

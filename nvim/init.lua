@@ -51,6 +51,17 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
+-- Typst file settings (filetype detection handled by typst.vim)
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "typst",
+    callback = function()
+        -- Enable spell checking for typst files
+        vim.opt_local.spell = true
+        vim.opt_local.spelloptions = "camel"
+        vim.opt_local.spellsuggest = "best,10"
+    end
+})
+
 -- Custom spell checking commands
 vim.api.nvim_create_user_command("SpellAdd", function(opts)
     local word = opts.args
