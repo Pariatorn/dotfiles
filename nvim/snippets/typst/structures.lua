@@ -2,18 +2,19 @@ local ls = require("luasnip")
 local s = ls.snippet
 local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
+local fmt = require("luasnip.extras.fmt").fmt
 local rep = require("luasnip.extras").rep
 
 return {
     -- Complex figure with caption and label
     s(
         { trig = "fig", dscr = "Figure with image" },
-        fmta(
+        fmt(
             [[
             #figure(
-              image("<>", width: <>),
-              caption: [<>],
-            ) <label("<>")>
+              image("{}", width: {}),
+              caption: [{}],
+            ) <label("{}")>
             ]],
             { i(1, "path/to/image.png"), i(2, "80%"), i(3), i(4) }
         )
@@ -22,21 +23,21 @@ return {
     -- Table (most complex structure)
     s(
         { trig = "tab", dscr = "Table with caption" },
-        fmta(
+        fmt(
             [[
             #figure(
               table(
-                columns: <>,
+                columns: {},
                 stroke: none,
                 table.header(
-                  [<>], [<>]
+                  [{}], [{}]
                 ),
                 table.hline(),
-                [<>], [<>],
-                [<>], [<>],
+                [{}], [{}],
+                [{}], [{}],
               ),
-              caption: [<>],
-            ) <label("<>")>
+              caption: [{}],
+            ) <label("{}")>
             ]],
             { i(1, "2"), i(2), i(3), i(4), i(5), i(6), i(7), i(8), i(9) }
         )
@@ -45,9 +46,9 @@ return {
     -- Equation with numbering
     s(
         { trig = "eq", dscr = "Numbered equation" },
-        fmta(
+        fmt(
             [[
-            $ <> $ <label("<>")>
+            $ {} $ <label("{}")>
             ]],
             { i(1), i(2) }
         )
@@ -87,9 +88,9 @@ return {
     -- Bibliography entry (complex)
     s(
         { trig = "bib", dscr = "Bibliography entry" },
-        fmta(
+        fmt(
             [[
-            #bibliography("<>")
+            #bibliography("{}")
             ]],
             { i(1, "references.bib") }
         )
@@ -98,13 +99,13 @@ return {
     -- Complex enumeration with custom numbering
     s(
         { trig = "enumc", dscr = "Custom enumeration" },
-        fmta(
+        fmt(
             [[
             #enum(
-              numbering: "<>",
-              [<>],
-              [<>],
-              [<>]
+              numbering: "{}",
+              [{}],
+              [{}],
+              [{}]
             )
             ]],
             { i(1, "1.a)"), i(2), i(3), i(4) }
@@ -114,15 +115,15 @@ return {
     -- Grid layout (complex positioning)
     s(
         { trig = "grid", dscr = "Grid layout" },
-        fmta(
+        fmt(
             [[
             #grid(
-              columns: (<>, <>),
+              columns: ({}, {}),
               gutter: 1em,
-              [<>],
-              [<>],
-              [<>],
-              [<>]
+              [{}],
+              [{}],
+              [{}],
+              [{}]
             )
             ]],
             { i(1, "1fr"), i(2, "1fr"), i(3), i(4), i(5), i(6) }

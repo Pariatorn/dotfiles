@@ -73,6 +73,36 @@ vim.api.nvim_create_user_command("SpellAdd", function(opts)
     print("Added '" .. word .. "' to spell file")
 end, { nargs = "?" })
 
+-- Typst formatter switching command
+vim.api.nvim_create_user_command("TypstFormatter", function(opts)
+    local mode = opts.args
+    if mode == "" then
+        print("Current formatter mode: " .. (vim.g.typst_formatter_mode or "typstyle"))
+        print("Available modes: typstyle, typstfmt, disable")
+        return
+    end
+    
+    if mode == "typstyle" or mode == "typstfmt" or mode == "disable" then
+        -- Update the LSP client settings
+        local clients = vim.lsp.get_active_clients({name = "tinymist"})
+        for _, client in ipairs(clients) do
+            client.config.settings.formatterMode = mode
+            client.notify("workspace/didChangeConfiguration", {
+                settings = client.config.settings
+            })
+        end
+        vim.g.typst_formatter_mode = mode
+        print("Typst formatter mode set to: " .. mode)
+    else
+        print("Invalid formatter mode. Use: typstyle, typstfmt, or disable")
+    end
+end, { 
+    nargs = "?", 
+    complete = function() 
+        return {"typstyle", "typstfmt", "disable"} 
+    end 
+})
+
 -- Better navigation for wrapped lines
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })

@@ -53,6 +53,9 @@ function M.setup()
             semanticTokens = "disable",
         },
         on_attach = function(client, bufnr)
+            -- Enable formatting capability
+            client.server_capabilities.documentFormattingProvider = true
+            
             -- Typst-specific keymaps for pin/unpin main file functionality
             vim.keymap.set("n", "<leader>tp", function()
                 client:exec_cmd({
@@ -69,6 +72,15 @@ function M.setup()
                     arguments = { vim.v.null },
                 }, { bufnr = bufnr })
             end, { desc = "[T]inymist [U]npin Main File", noremap = true, buffer = bufnr })
+            
+            -- Optional: Format on save for Typst files
+            -- Uncomment the following if you want automatic formatting on save
+            -- vim.api.nvim_create_autocmd("BufWritePre", {
+            --     buffer = bufnr,
+            --     callback = function()
+            --         vim.lsp.buf.format({ bufnr = bufnr })
+            --     end,
+            -- })
         end,
     })
 end

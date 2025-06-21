@@ -2,6 +2,7 @@ local ls = require("luasnip")
 local s = ls.snippet
 local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
+local fmt = require("luasnip.extras.fmt").fmt
 local rep = require("luasnip.extras").rep
 
 local typst = require("typst.conditions")
@@ -76,9 +77,9 @@ return {
     -- Limits
     s(
         {trig = "lim", dscr = "Limit"},
-        fmta(
+        fmt(
             [[
-            lim_(<> -> <>) <>
+            lim_({} -> {}) {}
             ]],
             {i(1), i(2), i(0)}
         ),

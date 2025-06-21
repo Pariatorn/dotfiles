@@ -70,7 +70,7 @@ sudo apt install kitty zathura fish
    
    # Option 2: Using Cargo
    cargo install --locked typst-cli
-   ```
+```
 
 3. Install Python provider for Neovim:
 ```bash
