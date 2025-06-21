@@ -62,17 +62,11 @@ This document provides a comprehensive list of keybindings and features availabl
 - `<leader>tv` - View PDF (opens compiled PDF)
 
 ### Document Management
-- `<leader>tf` - Format document (using typstyle/typstfmt)
-- `<leader>cf` - Format document (universal formatting)
+- `<leader>tf` - Format document (using typstyle)
 - `<leader>tp` - Pin main file (for multi-file projects)
 - `<leader>tu` - Unpin main file
 - `<leader>tr` - Toggle web preview (live preview in browser)
 - `<leader>ts` - Sync preview with cursor position
-
-### Formatting Options
-- **typstyle** (default): Modern, opinionated formatter
-- **typstfmt**: Alternative formatter
-- `:TypstFormatter <mode>` - Switch formatter (typstyle/typstfmt/disable)
 
 ### Features
 - **Automatic compilation**: Fast incremental compilation on save

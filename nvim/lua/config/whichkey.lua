@@ -113,21 +113,6 @@ wk.add({
     end, desc = "Sync Preview with Cursor", cond = function()
         return pcall(require, "typst-preview")
     end },
-    { "<leader>tf", function() 
-        local filetype = vim.bo.filetype
-        if filetype == "typst" then
-            -- Enhanced formatting for Typst with feedback
-            vim.lsp.buf.format({
-                async = true,
-                filter = function(client)
-                    return client.name == "tinymist"
-                end,
-            })
-            print("Formatting Typst document with typstyle...")
-        else
-            print("Not a Typst file")
-        end
-    end, desc = "Format Document" },
 
     -- LSP operations
     { "gd", function() 
@@ -163,22 +148,7 @@ wk.add({
     -- Code actions and refactoring
     { "<leader>cr", function() vim.lsp.buf.rename() end, desc = "Rename Symbol" },
     { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code Actions" },
-    { "<leader>cf", function() 
-        local filetype = vim.bo.filetype
-        if filetype == "typst" then
-            -- Enhanced formatting for Typst with feedback
-            vim.lsp.buf.format({
-                async = true,
-                filter = function(client)
-                    return client.name == "tinymist"
-                end,
-            })
-            print("Formatting Typst document with typstyle...")
-        else
-            -- Default formatting for other filetypes
-            vim.lsp.buf.format()
-        end
-    end, desc = "Format Document" },
+    { "<leader>cf", function() vim.lsp.buf.format() end, desc = "Format Document" },
     { "<leader>cl", "<cmd>Lint<CR>", desc = "Lint Current File" },
     { "<leader>cd", "<cmd>Telescope diagnostics<CR>", desc = "Show Diagnostics" },
     { "<leader>cj", function() vim.diagnostic.goto_next() end, desc = "Next Diagnostic" },
