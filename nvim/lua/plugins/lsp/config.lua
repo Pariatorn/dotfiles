@@ -49,7 +49,7 @@ function M.setup()
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
         settings = {
             formatterMode = "typstyle",
-            exportPdf = "onType",
+            exportPdf = "never",
             semanticTokens = "disable",
         },
         on_attach = function(client, bufnr)

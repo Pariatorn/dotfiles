@@ -37,22 +37,22 @@ return {
         end,
     },
 
-    -- Typst preview (optional web preview)
-    {
-        "chomosuke/typst-preview.nvim",
-        ft = "typst",
-        version = "1.*",
-        build = function()
-            require("typst-preview").update()
-        end,
-        opts = {
-            -- Settings for typst-preview
-            get_main_file = function(path_of_current_buffer)
-                return path_of_current_buffer
-            end,
-            get_root = function(path_of_main_file)
-                return vim.fn.fnamemodify(path_of_main_file, ":p:h")
-            end,
-        },
-    },
+    -- Typst preview (DISABLED - was causing performance issues in visual mode)
+    -- {
+    --     "chomosuke/typst-preview.nvim",
+    --     ft = "typst",
+    --     version = "1.*",
+    --     build = function()
+    --         require("typst-preview").update()
+    --     end,
+    --     opts = {
+    --         -- Settings for typst-preview
+    --         get_main_file = function(path_of_current_buffer)
+    --             return path_of_current_buffer
+    --         end,
+    --         get_root = function(path_of_main_file)
+    --             return vim.fn.fnamemodify(path_of_main_file, ":p:h")
+    --         end,
+    --     },
+    -- },
 } 

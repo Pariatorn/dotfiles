@@ -103,16 +103,6 @@ wk.add({
     { "<leader>tp", desc = "Pin Main File" }, -- Configured in LSP on_attach
     { "<leader>tu", desc = "Unpin Main File" }, -- Configured in LSP on_attach
     { "<leader>tf", function() vim.lsp.buf.format() end, desc = "Format Document" },
-    { "<leader>tr", function()
-        require("typst-preview").toggle()
-    end, desc = "Toggle Preview", cond = function()
-        return pcall(require, "typst-preview")
-    end },
-    { "<leader>ts", function()
-        require("typst-preview").sync_with_cursor()
-    end, desc = "Sync Preview with Cursor", cond = function()
-        return pcall(require, "typst-preview")
-    end },
 
     -- LSP operations
     { "gd", function() 
