@@ -60,18 +60,6 @@ sudo apt install neovim python3-pip nodejs npm ripgrep fd-find
 sudo apt install kitty zathura fish
 ```
 
-   For Fedora users, install Typst:
-   ```bash
-   # Option 1: Using Snap (recommended)
-   sudo dnf install snapd
-   sudo systemctl enable --now snapd.socket
-   sudo ln -s /var/lib/snapd/snap /snap
-   sudo snap install typst
-   
-   # Option 2: Using Cargo
-   cargo install --locked typst-cli
-```
-
 3. Install Python provider for Neovim:
 ```bash
 pip3 install --user pynvim

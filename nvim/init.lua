@@ -33,6 +33,8 @@ vim.opt.timeoutlen = 500     -- By default timeoutlen is 1000 ms
 vim.opt.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.opt.ignorecase = true    -- Ignore case when searching
 vim.opt.smartcase = true     -- Smart case when searching
+vim.opt.scrolloff = 8        -- Keep 8 lines above/below cursor when scrolling
+vim.opt.sidescrolloff = 8    -- Keep 8 columns left/right of cursor when scrolling
 vim.opt.termguicolors = true -- True color support
 
 -- LaTeX specific settings
