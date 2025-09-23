@@ -30,7 +30,8 @@ function M.setup()
     
     lint.linters_by_ft = {
         tex = { "chktex" },
-        bib = { "bibclean" },
+        latex = { "chktex" },
+        bib = { "chktex" },
     }
     
     -- Set up autocommands for linting

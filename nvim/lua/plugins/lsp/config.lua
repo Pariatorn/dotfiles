@@ -28,9 +28,16 @@ function M.setup()
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
     end
     
-    -- Configure texlab
-    require("lspconfig").texlab.setup({
+    -- Initialize lspconfig to add configurations to runtime path
+    require("lspconfig")
+    
+    -- Set global LSP configuration using the new vim.lsp.config API
+    vim.lsp.config('*', {
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    })
+    
+    -- Configure texlab using the new API
+    vim.lsp.config('texlab', {
         settings = {
             texlab = {
                 build = {
@@ -44,9 +51,8 @@ function M.setup()
         },
     })
     
-    -- Configure tinymist for Typst
-    require("lspconfig").tinymist.setup({
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    -- Configure tinymist for Typst using the new API
+    vim.lsp.config('tinymist', {
         settings = {
             formatterMode = "typstyle",
             exportPdf = "never",
@@ -71,6 +77,10 @@ function M.setup()
             end, { desc = "[T]inymist [U]npin Main File", noremap = true, buffer = bufnr })
         end,
     })
+    
+    -- Enable the language servers
+    vim.lsp.enable('texlab')
+    vim.lsp.enable('tinymist')
 end
 
 return M 

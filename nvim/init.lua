@@ -37,7 +37,7 @@ vim.opt.scrolloff = 8        -- Keep 8 lines above/below cursor when scrolling
 vim.opt.sidescrolloff = 8    -- Keep 8 columns left/right of cursor when scrolling
 vim.opt.termguicolors = true -- True color support
 
-vim.lsp.set_log_level("off")
+vim.lsp.log.set_level(vim.log.levels.OFF)
 
 -- LaTeX specific settings
 vim.g.tex_flavor = "latex"
