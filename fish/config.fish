@@ -8,7 +8,8 @@ if status is-interactive
     set -gx MANPAGER 'nvim +Man!'
 
     # Remove conflicting keybindings
-    bind --erase --all \ct  # Conflicts with NeoVim terminal
+    # Unbind Ctrl+T to prevent conflict with Telescope in Neovim's terminal mode
+    bind --erase --all \ct
 
     # Theme and Prompt
     fish_config prompt choose scales

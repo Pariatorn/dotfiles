@@ -26,8 +26,8 @@ return {
                 dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
                 dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
                 dashboard.button("t", "  Find text", ":Telescope live_grep<CR>"),
-                dashboard.button("l", "  LaTeX files", ":cd ~/Documents/latex<CR>:Telescope find_files<CR>"),
-                dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua<CR>"),
+                dashboard.button("l", "  LaTeX files", ":cd " .. vim.fn.expand("~") .. "/Documents/latex<CR>:Telescope find_files<CR>"),
+                dashboard.button("c", "  Configuration", ":e " .. vim.fn.stdpath("config") .. "/init.lua<CR>"),
                 dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
             }
 

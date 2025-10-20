@@ -16,6 +16,10 @@ set zoom-max 1000
 set zoom-center true
 set render-loading false
 set selection-clipboard clipboard
+-- set sandbox "normal"
+-- The sandbox feature restricts zathura's access to the filesystem.
+-- For SyncTeX to work with Neovim, the sandbox must be disabled.
+-- This has security implications, so be aware of the risks.
 set sandbox none
 
 # Synctex Integration
@@ -94,7 +98,6 @@ set show-scrollbars             true
 # Document colors
 set default-bg                  "#1d2021"
 set default-fg                  "#3c3836"
-set render-loading              true
 set render-loading-bg           "#ebdbb2"
 set render-loading-fg           "#3c3836"
 
