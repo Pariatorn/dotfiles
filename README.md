@@ -87,6 +87,11 @@ nvim
 ```
 .
 ├── nvim/           # Neovim configuration
+│   ├── lua/
+│   │   ├── core/       # Core settings, keymaps, and autocommands
+│   │   ├── plugins/    # Plugin configurations
+│   │   └── utils/      # Utility modules
+│   └── init.lua    # Main entry point
 ├── kitty/          # Kitty terminal configuration
 ├── zathura/        # Zathura PDF viewer configuration
 ├── fish/           # Fish shell configuration
