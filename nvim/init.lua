@@ -21,4 +21,4 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins")
 
 -- Load configurations
-require("config.whichkey") 
+require("config.whichkey")

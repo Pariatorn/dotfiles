@@ -61,10 +61,16 @@ map("n", "<leader>tf", function() vim.lsp.buf.format() end, { desc = "Format Doc
 -- LSP operations
 map("n", "gd", function() 
     -- Jump directly to definition if there's only one
-    local params = vim.lsp.util.make_position_params()
+    local client = vim.lsp.get_clients({ bufnr = 0 })[1]
+    if not client then
+        vim.notify("No LSP client attached", vim.log.levels.WARN)
+        return
+    end
+    
+    local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
     vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
         if result and #result == 1 then
-            vim.lsp.util.jump_to_location(result[1], vim.lsp.get_client_by_id(ctx.client_id).offset_encoding)
+            vim.lsp.util.show_document(result[1], { focus = true })
         else
             vim.lsp.buf.definition()
         end
