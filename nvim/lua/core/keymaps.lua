@@ -54,8 +54,6 @@ local typst_utils = require("utils.typst")
 map("n", "<leader>tw", "<cmd>TypstWatch<CR>", { desc = "Watch & Compile" })
 map("n", "<leader>tc", typst_utils.compile, { desc = "Compile Once" })
 map("n", "<leader>tv", typst_utils.view, { desc = "View PDF" })
-map("n", "<leader>tp", ":lua require'typst-lsp'.pin_main_file()<CR>", { desc = "Pin Main File" })
-map("n", "<leader>tu", ":lua require'typst-lsp'.unpin_main_file()<CR>", { desc = "Unpin Main File" })
 map("n", "<leader>tf", function() vim.lsp.buf.format() end, { desc = "Format Document" })
 
 -- LSP operations

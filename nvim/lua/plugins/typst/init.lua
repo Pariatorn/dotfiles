@@ -28,15 +28,6 @@ return {
         end,
     },
 
-    -- Tinymist LSP support
-    {
-        "williamboman/mason.nvim",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            table.insert(opts.ensure_installed, "tinymist")
-        end,
-    },
-
     -- Typst preview (DISABLED - was causing performance issues in visual mode)
     -- {
     --     "chomosuke/typst-preview.nvim",

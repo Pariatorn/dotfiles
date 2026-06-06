@@ -12,63 +12,6 @@ return {
         end,
     },
 
-    -- Snippets
-    {
-        "L3MON4D3/LuaSnip",
-        dependencies = {
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets",
-        },
-        config = function()
-            local ls = require("luasnip")
-            
-            -- Add snippets directory to package path
-            local snippets_path = vim.fn.stdpath("config") .. "/snippets"
-            package.path = package.path .. ";" .. snippets_path .. "/?.lua"
-            
-            -- Load snippets from the snippets directory
-            require("luasnip.loaders.from_lua").load({paths = snippets_path})
-            require("luasnip").filetype_extend("latex", { "tex" })
-            require("luasnip").filetype_extend("typst", { "typst" })
-
-            -- Snippet settings
-            ls.config.set_config({
-                history = true,                -- keep around last snippet local to jump back
-                updateevents = "TextChanged,TextChangedI", -- update changes as you type
-                enable_autosnippets = false,
-                ext_opts = {
-                    [require("luasnip.util.types").choiceNode] = {
-                        active = {
-                            virt_text = { { "●", "GruvboxOrange" } },
-                        },
-                    },
-                },
-            })
-
-            -- Filter VSCode snippets - prevent single dot triggering dots snippet
-            require("luasnip").filetype_extend("tex", { "latex" })
-            
-            -- Block specific problematic snippets
-            local filter_ft_snippets = function(snippets, ft)
-                if ft == "latex" then
-                    -- Remove the dots snippet that triggers with a single dot
-                    if snippets.etc and snippets.etc.prefix == "..." then
-                        -- We'll use our custom snippet for this
-                        snippets.etc = nil
-                    end
-                end
-                return snippets
-            end
-
-            -- Load VSCode style snippets with our filter
-            require("luasnip.loaders.from_vscode").lazy_load({ 
-                paths = vim.fn.stdpath("data") .. "/lazy/friendly-snippets/snippets",
-                override_priority = true,
-                filter_snippets = filter_ft_snippets
-            })
-        end,
-    },
-
     -- Autocompletion
     {
         "hrsh7th/nvim-cmp",
@@ -77,19 +20,11 @@ return {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
-            "L3MON4D3/LuaSnip",
-            "saadparwaiz1/cmp_luasnip",
         },
         config = function()
             local cmp = require("cmp")
-            local luasnip = require("luasnip")
 
             cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
-                },
                 mapping = {
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -99,8 +34,6 @@ return {
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
                         else
                             fallback()
                         end
@@ -108,8 +41,6 @@ return {
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
                         else
                             fallback()
                         end
@@ -117,7 +48,6 @@ return {
                 },
                 sources = {
                     { name = "nvim_lsp" },
-                    { name = "luasnip" },
                     { name = "buffer" },
                     { name = "path" },
                 },
@@ -142,4 +72,4 @@ return {
             require("plugins.lsp.linting").setup()
         end,
     },
-} 
+}

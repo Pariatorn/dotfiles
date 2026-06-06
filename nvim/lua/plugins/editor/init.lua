@@ -45,12 +45,13 @@ return {
         },
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "lua", "vim", "vimdoc", "latex", "bibtex" },
+                ensure_installed = { "lua", "vim", "vimdoc", "latex", "bibtex", "typst" },
                 sync_install = false,
                 auto_install = true,
                 highlight = {
                     enable = true,
-                    additional_vim_regex_highlighting = { "latex", "markdown" },
+                    disable = { "latex" },
+                    additional_vim_regex_highlighting = { "markdown" },
                 },
                 indent = {
                     enable = true,
