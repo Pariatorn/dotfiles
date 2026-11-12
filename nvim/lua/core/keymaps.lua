@@ -1,103 +1,68 @@
--- Better navigation for wrapped lines
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('v', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-vim.keymap.set('v', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-
+-- Global keymaps.
+-- LaTeX (<leader>l) and Typst (<leader>t) maps are buffer-local, see core/autocmds.lua.
+-- Neovim defaults that are relied upon (not redefined here):
+--   gc/gcc comment · K hover · grn rename · gra code action · grr references
+--   gri implementation · gO document symbols · ]d/[d diagnostics · an/in (visual) TS selection
 local map = vim.keymap.set
 
--- Better window navigation
-map("n", "<C-h>", "<C-w>h", { desc = "Navigate to left window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Navigate to bottom window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Navigate to top window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Navigate to right window" })
+-- Move by visual line when no count is given
+map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Resize with arrows
-map("n", "<C-Up>", ":resize -2<CR>", { desc = "Decrease window height" })
-map("n", "<C-Down>", ":resize +2<CR>", { desc = "Increase window height" })
-map("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-map("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+-- Windows
+map("n", "<C-h>", "<C-w>h", { desc = "Window left" })
+map("n", "<C-j>", "<C-w>j", { desc = "Window down" })
+map("n", "<C-k>", "<C-w>k", { desc = "Window up" })
+map("n", "<C-l>", "<C-w>l", { desc = "Window right" })
+map("n", "<C-Up>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
+map("n", "<C-Down>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
+map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
 
--- Buffer navigation with shift
-map("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
-map("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
+-- Buffers
+map("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+map("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+map("n", "<leader>bc", "<cmd>bd<CR>", { desc = "Close buffer" })
+map("n", "<leader>bC", "<cmd>bd!<CR>", { desc = "Force close buffer" })
+map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "New buffer" })
+map("n", "<leader>ba", "<cmd>%bd|e#|bd#<CR>", { desc = "Close all other buffers" })
 
--- Enhanced buffer management
-map("n", "<leader>bc", ":bd<CR>", { desc = "Close current buffer" })
-map("n", "<leader>bC", ":bd!<CR>", { desc = "Force close current buffer" })
-map("n", "<leader>bn", ":enew<CR>", { desc = "New buffer" })
-map("n", "<leader>ba", ":%bd|e#<CR>", { desc = "Close all buffers except current" })
-map("n", "<leader>bl", ":Telescope buffers<CR>", { desc = "List all buffers" })
-
--- File operations
+-- Files
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
-map("n", "<leader>Q", "<cmd>q!<CR>", { desc = "Force Quit" })
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "File Explorer" })
+map("n", "<leader>Q", "<cmd>q!<CR>", { desc = "Force quit" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "File explorer" })
 
--- Find operations (Telescope)
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find File" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live Grep" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help Tags" })
+-- Find (Telescope)
+map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find file" })
+map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Buffers" })
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent files" })
+map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help tags" })
 
--- LaTeX operations
-map("n", "<leader>lc", "<cmd>VimtexCompileSS<CR>", { desc = "Compile" })
-map("n", "<leader>lv", "<cmd>VimtexView<CR>", { desc = "View PDF" })
-map("n", "<leader>lt", "<cmd>VimtexTocToggle<CR>", { desc = "Toggle TOC" })
-map("n", "<leader>le", "<cmd>VimtexErrors<CR>", { desc = "Show Errors" })
-map("n", "<leader>lo", "<cmd>VimtexCompileOutput<CR>", { desc = "Show Compile Output" })
-map("n", "<leader>li", "<cmd>VimtexInfo<CR>", { desc = "Show Info" })
-map("n", "<leader>lk", "<cmd>VimtexClean<CR>", { desc = "Clean Files" })
+-- LSP
+map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
 
--- Typst operations
-local typst_utils = require("utils.typst")
-map("n", "<leader>tw", "<cmd>TypstWatch<CR>", { desc = "Watch & Compile" })
-map("n", "<leader>tc", typst_utils.compile, { desc = "Compile Once" })
-map("n", "<leader>tv", typst_utils.view, { desc = "View PDF" })
-map("n", "<leader>tf", function() vim.lsp.buf.format() end, { desc = "Format Document" })
+-- Code
+map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+map("n", "<leader>cf", function() vim.lsp.buf.format() end, { desc = "Format document" })
+map("n", "<leader>cl", "<cmd>Lint<CR>", { desc = "Lint file" })
+map("n", "<leader>cd", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics" })
+map("n", "<leader>cj", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
+map("n", "<leader>ck", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous diagnostic" })
+map("n", "<leader>cq", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
 
--- LSP operations
-map("n", "gd", function() 
-    -- Jump directly to definition if there's only one
-    local client = vim.lsp.get_clients({ bufnr = 0 })[1]
-    if not client then
-        vim.notify("No LSP client attached", vim.log.levels.WARN)
-        return
-    end
-    
-    local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
-    vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
-        if result and #result == 1 then
-            vim.lsp.util.show_document(result[1], { focus = true })
-        else
-            vim.lsp.buf.definition()
-        end
-    end)
-end, { desc = "Go to Definition" })
-map("n", "gD", function() vim.lsp.buf.declaration() end, { desc = "Go to Declaration" })
-map("n", "gi", function() vim.lsp.buf.implementation() end, { desc = "Go to Implementation" })
-map("n", "gr", function() vim.lsp.buf.references() end, { desc = "Find References" })
-map("n", "K", function() vim.lsp.buf.hover() end, { desc = "Show Documentation" })
-
--- Spell checking
-map("n", "<leader>st", "<cmd>setlocal spell!<CR>", { desc = "Toggle Spell Check" })
+-- Spelling
+map("n", "<leader>st", "<cmd>setlocal spell!<CR>", { desc = "Toggle spell check" })
 map("n", "<leader>se", "<cmd>setlocal spelllang=en_us<CR>", { desc = "English (US)" })
 map("n", "<leader>sb", "<cmd>setlocal spelllang=en_gb<CR>", { desc = "English (GB)" })
 map("n", "<leader>sd", "<cmd>setlocal spelllang=de_de<CR>", { desc = "German" })
 map("n", "<leader>sf", "<cmd>setlocal spelllang=fr<CR>", { desc = "French" })
 map("n", "<leader>sm", "<cmd>setlocal spelllang=en_us,de_de<CR>", { desc = "Multi (EN+DE)" })
-map("n", "<leader>sn", "<cmd>normal! 1z=<CR>", { desc = "Choose First Suggestion" })
-map("n", "<leader>ss", "<cmd>Telescope spell_suggest<CR>", { desc = "Show Suggestions" })
-map("n", "<leader>sp", "<cmd>normal! ]s<CR>", { desc = "Next Misspelled Word" })
-map("n", "<leader>sP", "<cmd>normal! [s<CR>", { desc = "Previous Misspelled Word" })
-map("n", "<leader>sa", "<cmd>SpellAdd<CR>", { desc = "Add Word to Dictionary" })
-
--- Code actions and refactoring
-map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
-map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Actions" })
-map("n", "<leader>cf", function() vim.lsp.buf.format() end, { desc = "Format Document" })
-map("n", "<leader>cl", "<cmd>Lint<CR>", { desc = "Lint Current File" })
-map("n", "<leader>cd", "<cmd>Telescope diagnostics<CR>", { desc = "Show Diagnostics" })
-map("n", "<leader>cj", function() vim.diagnostic.goto_next() end, { desc = "Next Diagnostic" })
-map("n", "<leader>ck", function() vim.diagnostic.goto_prev() end, { desc = "Previous Diagnostic" })
-map("n", "<leader>cq", function() vim.diagnostic.setloclist() end, { desc = "Diagnostics in Quickfix" })
+map("n", "<leader>sn", "<cmd>normal! 1z=<CR>", { desc = "First suggestion" })
+map("n", "<leader>ss", "<cmd>Telescope spell_suggest<CR>", { desc = "Suggestions" })
+map("n", "<leader>sp", "<cmd>normal! ]s<CR>", { desc = "Next misspelled" })
+map("n", "<leader>sP", "<cmd>normal! [s<CR>", { desc = "Previous misspelled" })
+map("n", "<leader>sa", "<cmd>SpellAdd<CR>", { desc = "Add word to dictionary" })

@@ -1,4 +1,4 @@
--- Load core configuration
+-- Core configuration (leader must be set before lazy loads plugins)
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
@@ -11,14 +11,15 @@ if not vim.uv.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugins
-require("lazy").setup("plugins")
-
--- Load configurations
-require("config.whichkey")
+-- Every lua/plugins/<name>/init.lua is imported automatically
+require("lazy").setup({
+  spec = { { import = "plugins" } },
+  install = { colorscheme = { "tokyonight" } },
+  change_detection = { notify = false },
+})

@@ -1,0 +1,41 @@
+# Starship prompt — minimal, Tokyo Night colors
+"$schema" = "https://starship.rs/config-schema.json"
+
+add_newline = true
+format = "$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+palette = "tokyonight"
+
+[palettes.tokyonight]
+blue    = "#7aa2f7"
+cyan    = "#7dcfff"
+magenta = "#bb9af7"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+red     = "#f7768e"
+comment = "#565f89"
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
+read_only = " 󰌾"
+
+[git_branch]
+symbol = " "
+style = "magenta"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "yellow"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+min_time = 2000
+style = "comment"
+format = "[took $duration]($style)"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](cyan)"

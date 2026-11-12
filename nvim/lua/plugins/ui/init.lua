@@ -16,7 +16,7 @@ return {
                 [[██  ██  ██ ██   ██ ██  ██ ██ ██    ██      ██ ██      ██   ██ ██ ██         ]],
                 [[██      ██ ██   ██ ██   ████  ██████  ███████  ██████ ██   ██ ██ ██         ]],
                 [[                                                                              ]],
-                [[     λ Write with Vim's Power • Compile with TeX's Grace • \begin{art}       ]],
+                [[        λ Write with Vim's power • Typeset with Typst or TeX               ]],
                 [[                                                                              ]],
             }
             
@@ -132,6 +132,7 @@ return {
                         "%.fls",
                         "%.fdb_latexmk",
                         "%.synctex.gz",
+                        "%.pdf",
                     },
                     preview = {
                         treesitter = false,
@@ -148,20 +149,24 @@ return {
                     }
                 },
             })
-            
-            -- Load extensions
-            pcall(require('telescope').load_extension, 'fzf')
+
         end,
     },
 
-    -- Which-key for key bindings
+    -- Which-key: shows pending keybindings (timeoutlen is set in core/options.lua)
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
-        init = function()
-            vim.o.timeout = true
-            vim.o.timeoutlen = 300
-        end,
-        opts = {},
+        opts = {
+            preset = "modern",
+            win = { border = "rounded" },
+            spec = {
+                { "<leader>f", group = "Find" },
+                { "<leader>b", group = "Buffer" },
+                { "<leader>c", group = "Code" },
+                { "<leader>s", group = "Spelling" },
+                -- <leader>l (LaTeX) and <leader>t (Typst) are buffer-local
+            },
+        },
     },
-} 
+}

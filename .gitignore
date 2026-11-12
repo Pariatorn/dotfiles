@@ -8,14 +8,6 @@ nvim/sessions/
 nvim/node_modules/
 nvim/mason/
 
-# Fish
-fish/fish_variables
-fish/completions/
-fish/conf.d/
-fish/functions/
-fish/generated_completions/
-fish/fish_history
-
 # Kitty
 kitty/kitty.conf.bak
 kitty/*.old

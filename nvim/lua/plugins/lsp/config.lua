@@ -1,87 +1,73 @@
 local M = {}
 
+-- Servers are only enabled when their binary exists (system PATH or Mason),
+-- so missing toolchains (e.g. no LaTeX) never cause errors.
+-- Install extra servers with :Mason or :MasonInstall <name>.
+local servers = {
+    tinymist = "tinymist", -- Typst
+    texlab = "texlab",     -- LaTeX (optional: :MasonInstall texlab)
+}
+
 function M.setup()
-    require("mason").setup()
+    require("mason").setup() -- also puts Mason's bin dir on PATH
     require("mason-lspconfig").setup({
-        ensure_installed = { "texlab", "tinymist" },
-        automatic_installation = true,
+        ensure_installed = { "tinymist" },
+        automatic_enable = false, -- enabled below, only if installed
     })
-    
-    -- Configure diagnostic display
+
     vim.diagnostic.config({
         virtual_text = true,
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
         signs = {
             text = {
                 [vim.diagnostic.severity.ERROR] = " ",
                 [vim.diagnostic.severity.WARN] = " ",
-                [vim.diagnostic.severity.HINT] = " ",
+                [vim.diagnostic.severity.HINT] = "󰌵 ",
                 [vim.diagnostic.severity.INFO] = " ",
             },
         },
-        underline = true,
-        update_in_insert = false,
-        severity_sort = true,
-        float = {
-            border = "rounded",
-            source = "always",
-            header = "",
-            prefix = "",
-        },
+        float = { border = "rounded", source = true },
     })
-    
-    -- Initialize lspconfig to add configurations to runtime path
-    require("lspconfig")
-    
-    -- Set global LSP configuration using the new vim.lsp.config API
-    vim.lsp.config('*', {
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+
+    vim.lsp.config("*", {
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
     })
-    
-    -- Configure texlab using the new API
-    vim.lsp.config('texlab', {
+
+    vim.lsp.config("texlab", {
         settings = {
             texlab = {
-                build = {
-                    onSave = true,
-                },
+                build = { onSave = false }, -- VimTeX compiles
                 latexFormatter = "latexindent",
-                latexindent = {
-                    modifyLineBreaks = false,
-                },
+                latexindent = { modifyLineBreaks = false },
             },
         },
     })
-    
-    -- Configure tinymist for Typst using the new API
-    vim.lsp.config('tinymist', {
+
+    vim.lsp.config("tinymist", {
         settings = {
             formatterMode = "typstyle",
-            exportPdf = "never",
+            exportPdf = "never", -- use <leader>tc / <leader>tw instead
             semanticTokens = "disable",
         },
         on_attach = function(client, bufnr)
-            -- Typst-specific keymaps for pin/unpin main file functionality
-            vim.keymap.set("n", "<leader>tp", function()
-                client:exec_cmd({
-                    title = "pin",
-                    command = "tinymist.pinMain",
-                    arguments = { vim.api.nvim_buf_get_name(0) },
-                }, { bufnr = bufnr })
-            end, { desc = "[T]inymist [P]in Main File", noremap = true, buffer = bufnr })
-
-            vim.keymap.set("n", "<leader>tu", function()
-                client:exec_cmd({
-                    title = "unpin",
-                    command = "tinymist.pinMain",
-                    arguments = { vim.v.null },
-                }, { bufnr = bufnr })
-            end, { desc = "[T]inymist [U]npin Main File", noremap = true, buffer = bufnr })
+            local function pin(arg, desc, lhs)
+                vim.keymap.set("n", lhs, function()
+                    client:exec_cmd({ title = desc, command = "tinymist.pinMain", arguments = { arg } },
+                        { bufnr = bufnr })
+                end, { buffer = bufnr, desc = desc })
+            end
+            pin(vim.api.nvim_buf_get_name(bufnr), "Pin main file", "<leader>tp")
+            pin(vim.NIL, "Unpin main file", "<leader>tu")
         end,
     })
-    
-    -- Enable the language servers
-    vim.lsp.enable('texlab')
-    vim.lsp.enable('tinymist')
+
+    for name, bin in pairs(servers) do
+        if vim.fn.executable(bin) == 1 then
+            vim.lsp.enable(name)
+        end
+    end
 end
 
-return M 
+return M

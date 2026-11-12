@@ -1,120 +1,147 @@
 # Dotfiles
 
 ```
-███    ███  █████  ███    ██ ██    ██ ███████  ██████ ██████  ██ ██████  
-████  ████ ██   ██ ████   ██ ██    ██ ██      ██      ██   ██ ██ ██   ██ 
-██ ████ ██ ███████ ██ ██  ██ ██    ██ ███████ ██      ██████  ██ ██████  
-██  ██  ██ ██   ██ ██  ██ ██ ██    ██      ██ ██      ██   ██ ██ ██      
-██      ██ ██   ██ ██   ████  ██████  ███████  ██████ ██   ██ ██ ██      
-                                                                          
-     λ Write with Vim's Power • Compile with TeX's Grace • \begin{art}
+███    ███  █████  ███    ██ ██    ██ ███████  ██████ ██████  ██ ██████
+████  ████ ██   ██ ████   ██ ██    ██ ██      ██      ██   ██ ██ ██   ██
+██ ████ ██ ███████ ██ ██  ██ ██    ██ ███████ ██      ██████  ██ ██████
+██  ██  ██ ██   ██ ██  ██ ██ ██    ██      ██ ██      ██   ██ ██ ██
+██      ██ ██   ██ ██   ████  ██████  ███████  ██████ ██   ██ ██ ██
+
+        λ Write with Vim's power • Typeset with Typst or TeX
 ```
 
-A streamlined configuration for Neovim, Kitty, Zathura, and Fish shell, forked and adapted from [benbrastmckie's config](https://github.com/benbrastmckie/.config). The main goal of this fork is to provide a minimal yet powerful setup for writing and development, with special focus on LaTeX and Typst integration.
+A small, distro-independent setup for **Neovim**, **Kitty**, **zsh** (oh-my-zsh + Starship) and **Zathura**, themed with **Tokyo Night** throughout. It started as a fork of [benbrastmckie's config](https://github.com/benbrastmckie/.config) and focuses on writing with Typst and (optionally) LaTeX.
 
-## Features
+LaTeX and Typst support are both optional. Neovim only enables a part if its tools are installed:
 
-- **Neovim** (v0.9.5+) configuration with:
-  - LaTeX integration via VimTeX
-  - Typst integration via typst.vim and tinymist LSP
-  - Modern UI with Lazy package manager
-  - Efficient code completion and LSP support
-  - Custom keybindings for improved workflow
-- **Kitty** terminal emulator with:
-  - Modern, GPU-accelerated performance
-  - Custom color scheme and fonts
-  - Convenient keyboard shortcuts
-- **Zathura** PDF viewer with:
-  - Vim-like keybindings
-  - Synctex support for LaTeX
-  - Dark mode and custom colors
-- **Fish** shell configuration with:
-  - Enhanced command completion
-  - Custom prompt and aliases
-  - Integration with common tools
+| Installed tool | What gets enabled |
+| --- | --- |
+| `typst` | `<leader>t…` compile / watch / view in Typst buffers |
+| `tinymist` (auto-installed via Mason) | Typst LSP, formatting (typstyle), pin/unpin main file |
+| `latexmk` (+ a TeX distribution) | VimTeX and the `<leader>l…` maps in TeX buffers |
+| `texlab` (`:MasonInstall texlab`) | LaTeX LSP |
+| `chktex` | LaTeX linting |
 
-## Requirements
+---
 
-- Neovim (>= 0.9.5)
-- Git
-- Node.js and npm
-- Python 3 and pip
-- A Nerd Font (included in repo)
-- LaTeX distribution (for LaTeX support)
-- Typst (for Typst support)
-- ripgrep, fd-find (for telescope)
+## 1. Install packages
 
-## Quick Installation
+Package names differ slightly between distributions, so use your package manager's search. Versions are minimums.
 
-1. Clone this repository:
+**Core**
+
+- `git`, `curl`, `unzip`, `tar`, `gzip` (used by the plugin managers / Mason)
+- `neovim` ≥ 0.12
+- `ripgrep`, `fd` (Telescope)
+- `tree-sitter-cli` and a C compiler (`gcc` or `clang`) to build Treesitter parsers
+- `zsh`
+- `starship`
+- `kitty` ≥ 0.37 (animated cursor trail; Nerd Font symbols are built in since 0.36)
+- **JetBrains Mono** font, e.g. `ttf-jetbrains-mono` / `fonts-jetbrains-mono` / `jetbrains-mono-fonts`
+- `zathura` and a PDF backend: `zathura-pdf-mupdf` (or `zathura-pdf-poppler`)
+
+**Optional**
+
+- `zoxide` (smarter `cd`, picked up automatically by `.zshrc`)
+- `typst` (Typst CLI for compile/watch)
+- A TeX distribution with `latexmk` and `lualatex` (e.g. `texlive`), plus `chktex` for linting
+- `xclip` / `wl-clipboard` (system clipboard on X11 / Wayland)
+- Liberation / DejaVu / Noto fonts if you use the optional `fontconfig/fonts.conf`
+
+## 2. Install oh-my-zsh and its plugins
+
 ```bash
-git clone https://github.com/Pariatorn/dotfiles.git ~/.config
+# oh-my-zsh (unattended: no shell switch, no zsh launched)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Community plugins
+ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+git clone https://github.com/zsh-users/zsh-autosuggestions     "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 ```
 
-2. Install required dependencies (example using apt-based systems):
+The installer writes a default `~/.zshrc`. Step 4 replaces it.
+
+## 3. Clone the repository
+
+Clone it into its own folder, **not** into `~/.config`:
+
 ```bash
-# Core dependencies
-sudo apt install neovim python3-pip nodejs npm ripgrep fd-find
-
-# Optional but recommended
-sudo apt install kitty zathura fish
+git clone https://github.com/Pariatorn/dotfiles.git ~/code/dotfiles
+cd ~/code/dotfiles
 ```
 
-3. Install Python provider for Neovim:
+## 4. Link (or copy) the configs
+
+Back up anything you want to keep first (e.g. `mv ~/.config/nvim ~/.config/nvim.bak`).
+
+**Option A: symlinks** (recommended; `git pull` updates everything)
+
 ```bash
-pip3 install --user pynvim
+mkdir -p ~/.config
+ln -sfn "$PWD/nvim"                  ~/.config/nvim
+ln -sfn "$PWD/kitty"                 ~/.config/kitty
+ln -sfn "$PWD/zathura"               ~/.config/zathura
+ln -sfn "$PWD/starship/starship.toml" ~/.config/starship.toml
+ln -sfn "$PWD/zsh/.zshrc"            ~/.zshrc
+ln -sfn "$PWD/fontconfig"            ~/.config/fontconfig   # optional: MS → Liberation font mapping
 ```
 
-4. Install the included Nerd Font:
+**Option B: copies** (independent from the repo)
+
 ```bash
-mkdir -p ~/.local/share/fonts
-cp -r ~/.config/fonts/MesloLGS\ NF/* ~/.local/share/fonts/
-fc-cache -f -v
+mkdir -p ~/.config
+cp -r nvim kitty zathura ~/.config/
+cp starship/starship.toml ~/.config/starship.toml
+cp zsh/.zshrc ~/.zshrc
+cp -r fontconfig ~/.config/                               # optional
 ```
 
-5. Set up configurations:
+## 5. Finish up
+
 ```bash
-# Fish shell (optional)
-chsh -s /usr/bin/fish
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
-
-# Neovim will install plugins on first launch
-nvim
+chsh -s "$(command -v zsh)"   # make zsh the login shell (log out and in again)
+fc-cache -f                   # refresh the font cache after installing fonts
+nvim                          # lazy.nvim installs plugins, Mason installs tinymist
 ```
 
-## Configuration Structure
+Inside Neovim, `:checkhealth` shows anything that's still missing. `:Lazy` and `:Mason` manage plugins and language servers.
+
+Check the font in kitty with `kitty +list-fonts | grep -i jetbrains` (or pick one interactively with `kitten choose-fonts`).
+
+Put machine-specific shell settings (PATH additions, secrets, aliases) in `~/.zshrc.local`. It's sourced automatically and not part of the repo.
+
+---
+
+## Structure
 
 ```
 .
-├── nvim/           # Neovim configuration
-│   ├── lua/
-│   │   ├── core/       # Core settings, keymaps, and autocommands
-│   │   ├── plugins/    # Plugin configurations
-│   │   └── utils/      # Utility modules
-│   └── init.lua    # Main entry point
-├── kitty/          # Kitty terminal configuration
-├── zathura/        # Zathura PDF viewer configuration
-├── fish/           # Fish shell configuration
-└── fonts/          # Nerd Fonts
+├── nvim/                    # Neovim (lazy.nvim)
+│   ├── init.lua
+│   └── lua/
+│       ├── core/            # options, keymaps, autocmds (incl. buffer-local TeX/Typst maps)
+│       ├── plugins/
+│       │   ├── editor/      # treesitter
+│       │   ├── lsp/         # mason, LSP servers, blink.cmp, nvim-lint
+│       │   ├── tex/         # VimTeX (only if latexmk exists)
+│       │   └── ui/          # tokyonight, alpha, bufferline, lualine, nvim-tree, telescope, which-key
+│       └── utils/typst.lua  # typst compile / watch / view helpers
+├── kitty/                   # kitty.conf + Tokyo Night theme.conf
+├── zsh/.zshrc               # oh-my-zsh + plugins + starship
+├── starship/starship.toml   # prompt
+├── zathura/zathurarc        # minimal PDF viewer config
+└── fontconfig/fonts.conf    # optional font fallbacks
 ```
 
-## Customization
+## Keybindings
 
-- Neovim: Edit `~/.config/nvim/init.lua` and files in `~/.config/nvim/lua/`
-- Kitty: Edit `~/.config/kitty/kitty.conf`
-- Zathura: Edit `~/.config/zathura/zathurarc`
-- Fish: Edit `~/.config/fish/config.fish`
-
-## Key Features and Bindings
-
-See [CheatSheet.md](CheatSheet.md) for detailed keybindings and features.
+See [CheatSheet.md](CheatSheet.md).
 
 ## Credits
 
-This configuration was originally forked from [benbrastmckie's config](https://github.com/benbrastmckie/.config). Later, I diverged more and more from the original config and added my own features tailored to my needs. Please see his original repository for the comprehensive version and different features.
-
-Thanks a lot to the other contributors of the different projects that I used in this configuration. I know, there is a lot of work put into them.
+Originally forked from [benbrastmckie's config](https://github.com/benbrastmckie/.config). It has diverged a lot since, so see his repository for the comprehensive original. Thanks to everyone behind the projects used here.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT, see [LICENSE](LICENSE).

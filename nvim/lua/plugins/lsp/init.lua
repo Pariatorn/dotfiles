@@ -1,70 +1,40 @@
 return {
-    -- LSP Support
+    -- LSP: server configs from nvim-lspconfig, enabled via vim.lsp.enable
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "hrsh7th/cmp-nvim-lsp",
+            "mason-org/mason.nvim",
+            "mason-org/mason-lspconfig.nvim",
+            "saghen/blink.cmp",
         },
         config = function()
             require("plugins.lsp.config").setup()
         end,
     },
 
-    -- Autocompletion
+    -- Completion
     {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
+        "saghen/blink.cmp",
+        version = "1.*",
+        opts = {
+            keymap = {
+                preset = "enter", -- <CR> accepts, <C-Space> opens, <C-e> closes
+                ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+                ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+                ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+            },
+            completion = {
+                list = { selection = { preselect = true, auto_insert = false } },
+                documentation = { auto_show = true, auto_show_delay_ms = 300 },
+            },
+            sources = { default = { "lsp", "path", "buffer" } },
+            signature = { enabled = true },
+            fuzzy = { implementation = "prefer_rust_with_warning" },
         },
-        config = function()
-            local cmp = require("cmp")
-
-            cmp.setup({
-                mapping = {
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                },
-                sources = {
-                    { name = "nvim_lsp" },
-                    { name = "buffer" },
-                    { name = "path" },
-                },
-            })
-
-            -- Set up cmdline completion
-            cmp.setup.cmdline(":", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({
-                    { name = "path" },
-                    { name = "cmdline" },
-                }),
-            })
-        end,
     },
 
-    -- Linting
+    -- Linting (only for linters that are actually installed)
     {
         "mfussenegger/nvim-lint",
         event = { "BufReadPre", "BufNewFile" },

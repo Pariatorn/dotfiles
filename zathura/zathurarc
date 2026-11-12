@@ -1,115 +1,55 @@
-# Zathura Configuration
-# ===================
+# Zathura — minimal PDF viewer config (Tokyo Night UI)
+# ====================================================
 
-# General Settings
-# ---------------
-set database "sqlite"
-set window-width 1280
-set window-height 1080
-set adjust-open "best-fit"
-set pages-per-row 1
-set scroll-page-aware true
-set scroll-full-overlap 0.01
-set scroll-step 100
-set zoom-min 10
-set zoom-max 1000
-set zoom-center true
-set render-loading false
-set selection-clipboard clipboard
--- set sandbox "normal"
--- The sandbox feature restricts zathura's access to the filesystem.
--- For SyncTeX to work with Neovim, the sandbox must be disabled.
--- This has security implications, so be aware of the risks.
-set sandbox none
+# General
+set selection-clipboard   clipboard
+set adjust-open           "best-fit"
+set scroll-page-aware     true
+set scroll-step           100
+set zoom-center           true
+set render-loading        false
+set window-title-basename true
+set statusbar-basename    true
+set statusbar-page-percent true
+set page-padding          2
 
-# Synctex Integration
-# ------------------
-set synctex true
-set synctex-editor-command "nvim --remote-silent +%{line} %{input}"
-
-# Key Bindings
-# -----------
-# Navigation
-map [normal] j scroll down
-map [normal] k scroll up
-map [normal] h scroll left
-map [normal] l scroll right
-map [normal] <C-d> scroll half-down
-map [normal] <C-u> scroll half-up
-map [normal] <C-f> scroll full-down
-map [normal] <C-b> scroll full-up
-
-# Zoom
+# Keys
 map K zoom in
 map J zoom out
-map = zoom in
-map - zoom out
-map 0 zoom default
-
-# Mode toggles
 map <Space> toggle_index
-map w recolor
-map <C-v> toggle_fullscreen
-map i toggle_index
-map p print
-map R rotate
+map <C-v>   toggle_fullscreen
+map w       recolor
+map R       rotate
 
-# Search
-map / search
-map ? search backward
-map n search forward
-map N search backward
+# UI colors (document itself is shown as-is; `w` toggles dark recolor)
+set default-bg            "#1f2335"
+set statusbar-bg          "#24283b"
+set statusbar-fg          "#c0caf5"
+set inputbar-bg           "#1f2335"
+set inputbar-fg           "#c0caf5"
+set notification-bg       "#24283b"
+set notification-fg       "#c0caf5"
+set notification-error-bg "#24283b"
+set notification-error-fg "#f7768e"
+set notification-warning-bg "#24283b"
+set notification-warning-fg "#e0af68"
+set completion-bg         "#24283b"
+set completion-fg         "#c0caf5"
+set completion-highlight-bg "#7aa2f7"
+set completion-highlight-fg "#1f2335"
+set index-bg              "#24283b"
+set index-fg              "#c0caf5"
+set index-active-bg       "#2e3c64"
+set index-active-fg       "#c0caf5"
+set highlight-color       "rgba(224,175,104,0.4)"
+set highlight-active-color "rgba(122,162,247,0.4)"
 
-# UI Colors (Gruvbox-inspired)
-# ---------------------------
-# Notification colors
-set notification-error-bg       "#ebdbb2"
-set notification-error-fg       "#9d0006"
-set notification-warning-bg     "#ebdbb2"
-set notification-warning-fg     "#b57614"
-set notification-bg             "#ebdbb2"
-set notification-fg             "#79740e"
+set recolor               false
+set recolor-lightcolor    "#24283b"
+set recolor-darkcolor     "#c0caf5"
+set recolor-keephue       true
 
-# Completion colors
-set completion-bg               "#d5c4a1"
-set completion-fg               "#3c3836"
-set completion-group-bg         "#ebdbb2"
-set completion-group-fg         "#928374"
-set completion-highlight-bg     "#076678"
-set completion-highlight-fg     "#d5c4a1"
-
-# Index mode colors
-set index-bg                    "#d5c4a1"
-set index-fg                    "#3c3836"
-set index-active-bg             "#076678"
-set index-active-fg             "#d5c4a1"
-
-# Input bar colors
-set inputbar-bg                 "#ebdbb2"
-set inputbar-fg                 "#3c3836"
-
-# Status bar
-set statusbar-bg                "#d5c4a1"
-set statusbar-fg                "#3c3836"
-set statusbar-v-padding         7
-set statusbar-h-padding         8
-set show-scrollbars             true
-
-# Document colors
-set default-bg                  "#1d2021"
-set default-fg                  "#3c3836"
-set render-loading-bg           "#ebdbb2"
-set render-loading-fg           "#3c3836"
-
-# Recoloring
-set recolor-lightcolor          "#ebdbb2"
-set recolor-darkcolor           "#3c3836"
-set recolor                     true
-
-# Additional Features
-# -----------------
-set window-title-basename true
-set window-title-page true
-set statusbar-basename true
-set statusbar-page-percent true
-set page-padding 1
+# LaTeX only: SyncTeX backward search into Neovim (needs nvim started with --listen / vimtex)
+# Disabling the sandbox is required for this; comment both out if you never use LaTeX.
+set synctex               true
+set sandbox               none
